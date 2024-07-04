@@ -30,7 +30,7 @@ const Register = () => {
             alert('Registration successful');
             navigate('/login');  // Use navigate to redirect
         } catch (error) {
-            alert('Registration failed', error);
+            alert( error);
             console.error(error);
         }
     };
