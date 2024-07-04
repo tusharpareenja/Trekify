@@ -30,8 +30,13 @@ const Register = () => {
             alert('Registration successful');
             navigate('/login');  // Use navigate to redirect
         } catch (error) {
-            alert( error);
             console.error(error);
+            if (error.code === 409) {
+                alert('User already registered.');
+            } else {
+                navigate('/login');
+            }
+            
         }
     };
 
@@ -56,6 +61,7 @@ const Register = () => {
                                 className='p-2 mb-4 border border-gray-300 rounded-md'
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
+                                required
                             />
                             <input
                                 type='email'
@@ -63,6 +69,7 @@ const Register = () => {
                                 className='p-2 mb-4 border border-gray-300 rounded-md'
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
+                                required
                             />
                             <input
                                 type='password'
@@ -70,6 +77,7 @@ const Register = () => {
                                 className='p-2 mb-4 border border-gray-300 rounded-md'
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
+                                required
                             />
                             <input
                                 type='password'
@@ -77,6 +85,7 @@ const Register = () => {
                                 className='p-2 mb-4 border border-gray-300 rounded-md'
                                 value={confirmPassword}
                                 onChange={(e) => setConfirmPassword(e.target.value)}
+                                required
                             />
                             <button
                                 type='submit'
