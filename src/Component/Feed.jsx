@@ -38,7 +38,7 @@ function Feed() {
 
   return (
     <div className='h-screen md:w-4/6 absolute flex right-0 w-full overflow-y-auto'>
-      <div className='w-full h-52 mt-24 hide-scrollbar' style={{ overflowX: 'scroll', overflowY: 'hidden' }}>
+      <div className='w-full h-52 mt-16 sm:mt-24 hide-scrollbar' style={{ overflowX: 'scroll', overflowY: 'hidden' }}>
         <div className='flex space-x-4 p-4'>
           {contentArray.map((item) => (
             <div
@@ -52,7 +52,7 @@ function Feed() {
         </div>
       </div>
          
-      <div className='fixed block md:hidden h-96 w-16 bg-white shadow-xl right-0 top-80 rounded-l-lg '>
+      <div className='fixed block md:hidden h-96 w-16 bg-white shadow-xl right-0 top-64 sm:top-80 rounded-l-lg '>
          <div className=' w-full h-12 items-center rounded-l-lg cursor-pointer hover:bg-slate-200 hover:border-purple-500 border-r-4 '>
           <img src={Home1} className='w-11 h-11 ml-2 p-2'></img>
          </div>
