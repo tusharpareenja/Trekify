@@ -7,15 +7,14 @@ import Shimla from '../assets/Images/shimla.png';
 import Laddakh from '../assets/Images/laddakh.png';
 import Nainital from '../assets/Images/nainital.png.png';
 import Solan from '../assets/Images/solan.png.png';
-import SearchIcon from '../assets/Icon/search_icon.png';
 import Home1 from '../assets/Icon/home_icon.png';
 import Bookmark from '../assets/Icon/bookmark.png';
 import hotel from '../assets/Icon/hotel (2).png';
 import Plane from '../assets/Icon/plane.png';
 import Update from '../assets/Icon/update.png';
 import Notification from '../assets/Icon/notification_icon.png';
-import Create from '../assets/Icon/add-file.png';
 import Logout from '../assets/Icon/logout (1).png';
+import Create from '../assets/Icon/add-file.png'
 import './Feed.css';
 
 const contentArray = [
@@ -51,7 +50,7 @@ function Feed() {
           ))}
         </div>
       </div>
-         
+
       <div className='fixed block md:hidden h-96 w-16 bg-white shadow-xl right-0 top-64 sm:top-80 rounded-l-lg '>
          <div className=' w-full h-12 items-center rounded-l-lg cursor-pointer hover:bg-slate-200 hover:border-purple-500 border-r-4 '>
           <img src={Home1} className='w-11 h-11 ml-2 p-2'></img>
@@ -65,9 +64,17 @@ function Feed() {
           <img src={Bookmark} className='w-11 h-11 ml-2 p-2'></img>
          </div>
 
-         <div className=' w-full h-12 items-center rounded-l-lg cursor-pointer hover:bg-slate-200 hover:border-purple-500 border-r-4 '>
+         <div className=' w-full h-12 items-center rounded-l-lg cursor-pointer hover:bg-slate-200 hover:border-purple-500 border-r-4 ' onClick={handleUploadClick}>
           <img src={Update} className='w-11 h-11 ml-2 p-2'></img>
          </div>
+
+         <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleFileChange}
+            style={{ display: 'none' }}
+            accept="image/*"
+          />
 
          <div className=' w-full h-12 items-center rounded-l-lg cursor-pointer hover:bg-slate-200 hover:border-purple-500 border-r-4 '>
           <img src={Plane} className='w-11 h-11 ml-2 p-2'></img>
@@ -80,7 +87,6 @@ function Feed() {
          <div className=' w-full h-12 items-center rounded-l-lg cursor-pointer  hover:bg-slate-200'>
           <img src={Create} className='w-11 h-11 ml-2 p-2'></img>
          </div>
-
 
          <div className=' w-full h-12 items-center rounded-l-lg cursor-pointer  hover:bg-slate-200' onClick={handleLogout} >
           <img src={Logout} className='w-11 h-11 ml-2 p-2'></img>

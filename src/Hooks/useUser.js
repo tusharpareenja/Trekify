@@ -1,4 +1,3 @@
-// useUser.js
 import { useState, useEffect, useRef } from 'react';
 import { account, storage } from '../Config/appwrite';
 import { useNavigate } from 'react-router-dom';
@@ -12,43 +11,32 @@ export const useUser = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    let isMounted = true; // flag to check if the component is still mounted
-
     const fetchUser = async () => {
       try {
         const userData = await account.get();
-        if (isMounted) {
-          setUser(userData);
-          // Fetch profile image URL if exists
-          if (userData.prefs && userData.prefs.profileImage) {
-            const fileId = userData.prefs.profileImage;
-            const filePreviewURL = storage.getFilePreview('667865dc0023cc2e76aa', fileId).href;
-            setProfileImage(filePreviewURL);
-          }
+        setUser(userData);
+
+        // Fetch profile image URL if exists
+        if (userData.prefs && userData.prefs.profileImage) {
+          const fileId = userData.prefs.profileImage;
+          const filePreviewURL = storage.getFilePreview('667865dc0023cc2e76aa', fileId).href;
+          setProfileImage(filePreviewURL);
         }
       } catch (error) {
-        if (isMounted) {
-          setError('Failed to fetch user');
-          console.error('Failed to fetch user', error);
-        }
+        setError('Failed to fetch user');
+        console.error('Failed to fetch user', error);
       } finally {
-        if (isMounted) {
-          setLoading(false);
-        }
+        setLoading(false);
       }
     };
 
     fetchUser();
-
-    return () => {
-      isMounted = false; // cleanup function to set the flag to false
-    };
   }, []);
 
   const handleLogout = async () => {
     try {
-      await account.deleteSession('current'); // Delete the current session
-      setUser(null); // Clear the user state
+      await account.deleteSession('current');
+      setUser(null);
       alert('Logged out successfully');
       navigate('/login');
     } catch (error) {
@@ -58,14 +46,18 @@ export const useUser = () => {
   };
 
   const handleUploadClick = () => {
-    fileInputRef.current.click();
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
   };
 
   const handleFileChange = async (event) => {
     const file = event.target.files[0];
     if (file) {
+      console.log('File selected:', file);
       try {
         const response = await storage.createFile('667865dc0023cc2e76aa', 'unique()', file);
+        console.log('File uploaded:', response);
         const fileId = response.$id;
 
         // Update user profile with the profile image file ID
@@ -73,10 +65,17 @@ export const useUser = () => {
 
         const filePreviewURL = storage.getFilePreview('667865dc0023cc2e76aa', fileId).href;
         setProfileImage(filePreviewURL);
+        console.log('Profile image updated:', filePreviewURL);
+
+        // Re-fetch user to update state
+        const updatedUser = await account.get();
+        setUser(updatedUser);
       } catch (error) {
         console.error('Failed to upload file', error);
         alert('Failed to upload profile picture');
       }
+    } else {
+      console.log('No file selected');
     }
   };
 
