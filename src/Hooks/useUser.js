@@ -9,8 +9,8 @@ export const useUser = () => {
   const [profileImage, setProfileImage] = useState(null);
   const [isLiked, setIsLiked] = useState({});
   const [posts, setPosts] = useState([]);
-  const profileFileInputRef = useRef(null); // Profile picture file input ref
-  const postFileInputRef = useRef(null); // Post file input ref
+  const profileFileInputRef = useRef(null);
+  const postFileInputRef = useRef(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -82,7 +82,7 @@ export const useUser = () => {
     }
   };
 
-  const PostFileChange = async (event) => {
+  const PostFileChange = async (event, addNewPost) => {
     const file = event.target.files[0];
     if (file && user) {
       try {
@@ -97,22 +97,26 @@ export const useUser = () => {
   
         const userId = user.$id;
         const Name = user.name;
+        const newPost = {
+          ProfilePicture: userProfileImageUrl,
+          userId,
+          postId: fileId,
+          Name,
+          fileUrl,
+          postDate: new Date().toISOString(),
+          likes: 0,
+        };
         await databases.createDocument(
           '667567cd002a30d963df',
           '6675686100282b6dd0ae',
           'unique()',
-          {
-            ProfilePicture: userProfileImageUrl, 
-            userId,
-            postId: fileId,
-            Name,
-            fileUrl,
-            postDate: new Date().toISOString(),
-            likes: 0,
-          }
+          newPost
         );
   
         console.log('Post uploaded successfully');
+        if (addNewPost) {
+          addNewPost(newPost);
+        }
       } catch (error) {
         console.error('Failed to upload file and save data', error);
         alert('Failed to upload post');
@@ -186,8 +190,8 @@ export const useUser = () => {
     loading,
     error,
     profileImage,
-    profileFileInputRef, // Update this
-    postFileInputRef, // Update this
+    profileFileInputRef,
+    postFileInputRef,
     handleLogout,
     handleUploadClick,
     handleFileChange,

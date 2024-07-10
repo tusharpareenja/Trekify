@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-
+import React, { useState, useRef } from 'react';
 import { useUser } from '../Hooks/useUser';
 import Bali from '../assets/Images/bali2.png.png';
 import Chitkul from '../assets/Images/chitkul.png.png';
@@ -18,7 +17,6 @@ import Logout from '../assets/Icon/logout (1).png';
 import Create from '../assets/Icon/add-file.png';
 import './Feed.css';
 import { FaHeart, FaRegHeart, FaBookmark, FaRegBookmark } from 'react-icons/fa';
-import { useEffect } from 'react';
 
 const contentArray = [
   { id: 1, backgroundImage: `url(${Bali})` },
@@ -31,19 +29,21 @@ const contentArray = [
 ];
 
 function Feed() {
-  const { handleLogout, handleUploadClick, fileInputRef, handleFileChange, PostUploadClick, PostFileChange, posts, handleLikeClick, isLiked } = useUser();
+  const {
+    handleLogout,
+    handleUploadClick,
+    fileInputRef,
+    handleFileChange,
+    PostUploadClick,
+    PostFileChange,
+    postFileInputRef,
+    posts,
+    handleLikeClick,
+    isLiked,
+  } = useUser();
 
   const [likes, setLikes] = useState({});
-  
   const [isSaved, setIsSaved] = useState({});
-  
-  useEffect(() => {
-    console.log('Posts:', posts); // Log posts to check if likes data is present
-    console.log('isLiked 1:', isLiked); // Log isLiked state to check liked status
-    console.log('likes:', likes); // Log likes state to check likes count
-  }, [posts, isLiked, likes]);
-
-
 
   return (
     <>
@@ -63,23 +63,21 @@ function Feed() {
         </div>
 
         <div className='w-full absolute left-0 top-80'>
-        {posts.map((post) => (
+          {posts.map((post) => (
             <div key={post.$id} className='flex justify-between w-52 h-96 ml-20 mb-48 mt-20 text-black rounded-xl sm:w-100 border-2 border-slate-700 sm:h-130 relative shadow-xl'>
               <div className='w-full h-auto shadow-lg p-2 flex flex-col rounded-t-lg sm:h-auto'>
                 <div className='flex items-center'>
                   <div className='w-7 h-7 rounded-full bg-black sm:w-9 sm:h-9'>
-                  <img
-                    src={post.ProfilePicture}
-                    
-                    className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-black"
-                  />
-
+                    <img
+                      src={post.ProfilePicture}
+                      className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-black"
+                    />
                   </div>
                   <h1 className='ml-4 mt-1 font-sans text-sm sm:text-xl'>{post.Name}</h1>
                 </div>
                 <p className='mt-2 text-xs sm:text-sm'>{post.description}</p>
-                <div className='mt-4  rounded-lg bg-gray-100'>
-                  <img src={post.fileUrl} alt="Post" className='w-full h-auto rounded-lg'/>
+                <div className='mt-4 rounded-lg bg-gray-100'>
+                  <img src={post.fileUrl} alt="Post" className='w-full h-auto rounded-lg' />
                 </div>
               </div>
               <div className='w-full h-7 sm:h-9 rounded-b-lg absolute bottom-0 flex justify-between items-center p-2'>
@@ -95,9 +93,7 @@ function Feed() {
               </div>
             </div>
           ))}
-          
-      
-      </div>
+        </div>
         <div className='fixed block md:hidden h-96 w-16 bg-white shadow-xl right-0 top-64 sm:top-80 rounded-l-lg'>
           <div className='w-full h-12 items-center rounded-l-lg cursor-pointer hover:bg-slate-200 hover:border-purple-500 border-r-4'>
             <img src={Home1} className='w-11 h-11 ml-2 p-2' alt='Home' />
@@ -111,17 +107,25 @@ function Feed() {
             <img src={Bookmark} className='w-11 h-11 ml-2 p-2' alt='Bookmark' />
           </div>
 
-          <div className='w-full h-12 items-center rounded-l-lg cursor-pointer hover:bg-slate-200 hover:border-purple-500 border-r-4' onClick={handleUploadClick}>
+          <div className='w-full h-12 items-center rounded-l-lg cursor-pointer  hover:bg-slate-200 hover:border-purple-500 border-r-4' onClick={handleUploadClick}>
             <img src={Update} className='w-11 h-11 ml-2 p-2' alt='Update' />
+            <input
+              type='file'
+              ref={fileInputRef}
+              onChange={handleFileChange}
+              style={{
+                opacity: 0, 
+                position: 'absolute', 
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                cursor: 'pointer', 
+              }} 
+              accept='image/*'
+            />
           </div>
-
-          <input
-            type='file'
-            ref={fileInputRef}
-            onChange={handleFileChange}
-            style={{ display: 'none' }}
-            accept='image/*'
-          />
+          
 
           <div className='w-full h-12 items-center rounded-l-lg cursor-pointer hover:bg-slate-200 hover:border-purple-500 border-r-4'>
             <img src={Plane} className='w-11 h-11 ml-2 p-2' alt='Plane' />
@@ -131,9 +135,17 @@ function Feed() {
             <img src={hotel} className='w-11 h-11 ml-2 p-2' alt='Hotel' />
           </div>
 
-          <div className='w-full h-12 items-center rounded-l-lg cursor-pointer hover:bg-slate-200'>
+          <div className='w-full h-12 items-center rounded-l-lg cursor-pointer hover:bg-slate-200' onClick={PostUploadClick}>
             <img src={Create} className='w-11 h-11 ml-2 p-2' alt='Create' />
           </div>
+
+          <input
+            type='file'
+            ref={postFileInputRef}
+            onChange={PostFileChange}
+            style={{ display: 'none' }}
+            accept='image/*'
+          />
 
           <div className='w-full h-12 items-center rounded-l-lg cursor-pointer hover:bg-slate-200' onClick={handleLogout}>
             <img src={Logout} className='w-11 h-11 ml-2 p-2' alt='Logout' />
