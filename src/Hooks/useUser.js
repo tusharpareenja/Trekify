@@ -9,7 +9,8 @@ export const useUser = () => {
   const [profileImage, setProfileImage] = useState(null);
   const [isLiked, setIsLiked] = useState({});
   const [posts, setPosts] = useState([]);
-  const fileInputRef = useRef(null);
+  const profileFileInputRef = useRef(null); // Profile picture file input ref
+  const postFileInputRef = useRef(null); // Post file input ref
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -49,8 +50,8 @@ export const useUser = () => {
   };
 
   const handleUploadClick = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
+    if (profileFileInputRef.current) {
+      profileFileInputRef.current.click();
     }
   };
 
@@ -60,6 +61,7 @@ export const useUser = () => {
       try {
         const response = await storage.createFile('667865dc0023cc2e76aa', 'unique()', file);
         const fileId = response.$id;
+      
         await account.updatePrefs({ profileImage: fileId });
 
         const filePreviewURL = storage.getFilePreview('667865dc0023cc2e76aa', fileId).href;
@@ -75,8 +77,8 @@ export const useUser = () => {
   };
 
   const PostUploadClick = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
+    if (postFileInputRef.current) {
+      postFileInputRef.current.click();
     }
   };
 
@@ -87,6 +89,12 @@ export const useUser = () => {
         const storageResponse = await storage.createFile('668c1aa1002169b92878', 'unique()', file);
         const fileId = storageResponse.$id;
         const fileUrl = storage.getFileView('668c1aa1002169b92878', fileId);
+  
+        const userProfileImageId = user.prefs.profileImage;
+        const userProfileImageUrl = userProfileImageId
+          ? storage.getFileView('667865dc0023cc2e76aa', userProfileImageId).href
+          : null;
+  
         const userId = user.$id;
         const Name = user.name;
         await databases.createDocument(
@@ -94,6 +102,7 @@ export const useUser = () => {
           '6675686100282b6dd0ae',
           'unique()',
           {
+            ProfilePicture: userProfileImageUrl, 
             userId,
             postId: fileId,
             Name,
@@ -102,7 +111,7 @@ export const useUser = () => {
             likes: 0,
           }
         );
-
+  
         console.log('Post uploaded successfully');
       } catch (error) {
         console.error('Failed to upload file and save data', error);
@@ -177,7 +186,8 @@ export const useUser = () => {
     loading,
     error,
     profileImage,
-    fileInputRef,
+    profileFileInputRef, // Update this
+    postFileInputRef, // Update this
     handleLogout,
     handleUploadClick,
     handleFileChange,

@@ -20,6 +20,8 @@ const Home = () => {
     fileInputRef,
     handleLogout,
     handleUploadClick,
+    profileFileInputRef, // Update this
+    postFileInputRef, // Update this
     handleFileChange,
     PostUploadClick,
     PostFileChange,
@@ -93,7 +95,7 @@ const Home = () => {
 
           <input
             type="file"
-            ref={fileInputRef}
+            ref={profileFileInputRef}
             onChange={handleFileChange}
             style={{ display: 'none' }}
             accept="image/*"
@@ -117,7 +119,7 @@ const Home = () => {
         </div>
         <input
             type="file"
-            ref={fileInputRef}
+            ref={postFileInputRef}
             onChange={PostFileChange}
             style={{ display: 'none' }}
             accept="image/*"

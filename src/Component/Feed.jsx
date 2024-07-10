@@ -64,10 +64,17 @@ function Feed() {
 
         <div className='w-full absolute left-0 top-80'>
         {posts.map((post) => (
-            <div key={post.$id} className='flex justify-between w-52 h-96 ml-20 mb-48 mt-20 text-black rounded-xl sm:w-100 border-2 border-slate-700 sm:h-130 relative'>
+            <div key={post.$id} className='flex justify-between w-52 h-96 ml-20 mb-48 mt-20 text-black rounded-xl sm:w-100 border-2 border-slate-700 sm:h-130 relative shadow-xl'>
               <div className='w-full h-auto shadow-lg p-2 flex flex-col rounded-t-lg sm:h-auto'>
                 <div className='flex items-center'>
-                  <div className='w-7 h-7 rounded-full bg-black sm:w-9 sm:h-9'></div>
+                  <div className='w-7 h-7 rounded-full bg-black sm:w-9 sm:h-9'>
+                  <img
+                    src={post.ProfilePicture}
+                    
+                    className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-black"
+                  />
+
+                  </div>
                   <h1 className='ml-4 mt-1 font-sans text-sm sm:text-xl'>{post.Name}</h1>
                 </div>
                 <p className='mt-2 text-xs sm:text-sm'>{post.description}</p>
