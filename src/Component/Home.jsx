@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useUser } from '../Hooks/useUser';
 import Logo from '../assets/Logo.png';
 import SearchIcon from '../assets/Icon/search_icon.png';
@@ -21,9 +21,12 @@ const Home = () => {
     handleLogout,
     handleUploadClick,
     handleFileChange,
+    PostUploadClick,
+    PostFileChange,
   } = useUser();
 
   const navigate = useNavigate();
+  const [showUploadForm, setShowUploadForm] = useState(false);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -107,9 +110,19 @@ const Home = () => {
           </div>
         </div>
 
-        <div className='h-10 w-64 bg-purple-500 fixed bottom-32 ml-20 rounded-3xl md:flex justify-center items-center shadow-md text-white hover:bg-purple-900 cursor-pointer hidden'>
+        <div className='h-10 w-64 bg-purple-500 fixed bottom-32 ml-20 rounded-3xl md:flex justify-center items-center shadow-md text-white hover:bg-purple-900 cursor-pointer hidden'
+        onClick={PostUploadClick}
+        >
           <h1>Create</h1>
         </div>
+        <input
+            type="file"
+            ref={fileInputRef}
+            onChange={PostFileChange}
+            style={{ display: 'none' }}
+            accept="image/*"
+          />
+
 
         {user && (
           <div className='h-10 w-64 bg-red-400 fixed bottom-20 ml-20 rounded-3xl md:flex justify-center items-center shadow-md text-black hover:bg-red-900 cursor-pointer hidden'>
@@ -117,7 +130,7 @@ const Home = () => {
           </div>
         )}
 
-        <Feed />
+        <Feed showUploadForm={showUploadForm} setShowUploadForm={setShowUploadForm} />
       </div>
     </>
   );
