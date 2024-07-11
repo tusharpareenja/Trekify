@@ -15,6 +15,7 @@ import Update from '../assets/Icon/update.png';
 import Notification from '../assets/Icon/notification_icon.png';
 import Logout from '../assets/Icon/logout (1).png';
 import Create from '../assets/Icon/add-file.png';
+import PostForm from './PostForm';
 import './Feed.css';
 import { FaHeart, FaRegHeart, FaBookmark, FaRegBookmark } from 'react-icons/fa';
 
@@ -44,7 +45,7 @@ function Feed() {
 
   const [likes, setLikes] = useState({});
   const [isSaved, setIsSaved] = useState({});
-
+  const [showUploadForm, setShowUploadForm] = useState(false);
   return (
     <>
       <div className='h-screen md:w-4/6 absolute flex right-0 w-full overflow-y-auto'>
@@ -75,9 +76,9 @@ function Feed() {
                   </div>
                   <h1 className='ml-4 mt-1 font-sans text-sm sm:text-xl'>{post.Name}</h1>
                 </div>
-                <p className='mt-2 text-xs sm:text-sm'>{post.description}</p>
-                <div className='mt-4 rounded-lg bg-gray-100'>
-                  <img src={post.fileUrl} alt="Post" className='w-full h-auto rounded-lg' />
+                <p className='mt-2 text-xs sm:text-sm'>{post.caption}</p>
+                <div className='mt-4 rounded-lg  object-contain'>
+                  <img src={post.fileUrl} alt="Post" className='w-full h-4/6 rounded-lg' />
                 </div>
               </div>
               <div className='w-full h-7 sm:h-9 rounded-b-lg absolute bottom-0 flex justify-between items-center p-2'>
@@ -108,18 +109,18 @@ function Feed() {
           </div>
 
           <div className='w-full h-12 items-center rounded-l-lg cursor-pointer  hover:bg-slate-200 hover:border-purple-500 border-r-4' onClick={handleUploadClick}>
-            <img src={Update} className='w-11 h-11 ml-2 p-2' alt='Update' />
+            <img src={Update} className='w-11 h-11 ml-2 p-2 cursor-pointer' alt='Update' />
             <input
               type='file'
               ref={fileInputRef}
               onChange={handleFileChange}
               style={{
-                opacity: 0, 
+                opacity:0,
+                backgroundColor: 'black',
                 position: 'absolute', 
-                top: 0,
-                left: 0,
+                top:145,
                 width: '100%',
-                height: '100%',
+                height: '10%',
                 cursor: 'pointer', 
               }} 
               accept='image/*'
@@ -135,7 +136,7 @@ function Feed() {
             <img src={hotel} className='w-11 h-11 ml-2 p-2' alt='Hotel' />
           </div>
 
-          <div className='w-full h-12 items-center rounded-l-lg cursor-pointer hover:bg-slate-200' onClick={PostUploadClick}>
+          <div className='w-full h-12 items-center rounded-l-lg cursor-pointer hover:bg-slate-200' onClick={() => setShowUploadForm(true)}>
             <img src={Create} className='w-11 h-11 ml-2 p-2' alt='Create' />
           </div>
 
@@ -151,6 +152,15 @@ function Feed() {
             <img src={Logout} className='w-11 h-11 ml-2 p-2' alt='Logout' />
           </div>
         </div>
+        {showUploadForm && <PostForm onClose={() => setShowUploadForm(false)} />}
+
+        <input
+          type="file"
+          ref={postFileInputRef}
+          onChange={PostFileChange}
+          style={{ display: 'none' }}
+          accept="image/*"
+        />
       </div>
     </>
   );
