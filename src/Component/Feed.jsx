@@ -76,7 +76,7 @@ function Feed() {
                   </div>
                   <h1 className='ml-4 mt-1 font-sans text-sm sm:text-xl'>{post.Name}</h1>
                 </div>
-                <p className='mt-2 text-xs sm:text-sm'>{post.caption}</p>
+                <p className='mt-2 text-xs sm:text-sm'>{post.Caption}</p>
                 <div className='mt-4 rounded-lg  object-contain'>
                   <img src={post.fileUrl} alt="Post" className='w-full h-4/6 rounded-lg' />
                 </div>
